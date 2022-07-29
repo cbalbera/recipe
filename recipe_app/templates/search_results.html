@@ -1,0 +1,31 @@
+<!-- templates/search_results.html -->
+<!DOCTYPE html>
+<html>
+{% load static %}
+<link rel="stylesheet" href="{%static "search_results_styles.css" %}" type="text/css">
+<body>
+
+<h1>Search Results</h1>
+
+<div class="container">
+    <div class="text-center mb-5">
+      <h3>Search results</h3>
+    </div>
+    {% for recipe in object_list %}
+    <div class="card mb-2">
+      <div class="card-body">
+        <div class="d-flex flex-column flex-lg-row">
+          <div class="row flex-fill">
+            <div class="col-sm-5">
+              <h4 class="h5">{{ recipe.name }}</h4>
+              <span class="badge">{{ recipe.course }}</span> <span class="badge">{{ recipe.cuisine }}</span> <span class="badge">{{ recipe.time  }} min</span>
+            </div>
+            <div class="col-sm-3 text-lg-end">
+              <a href="{{ recipe.link }}" class="btn btn-primary stretched-link">View In Source</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+</body>
