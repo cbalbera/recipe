@@ -21,11 +21,14 @@ class SearchResultsView(ListView):
     template_name = 'search_results.html'
     def get_queryset(self):
         name_query = self.request.GET.get("name")
-        print("name is "+name_query)
+        #print("name is "+name_query)
         cuisine_query = self.request.GET.get("cuisine")
-        print("cuisine is "+cuisine_query)
+        #print("cuisine is "+cuisine_query)
         course_query = self.request.GET.get("course")
-        print("course is is "+course_query)
+        #print("course is "+course_query)
+
+        # create object list using case-insensitive lookups
+        # https://docs.djangoproject.com/en/4.0/topics/db/queries/
         object_list = recipe.objects.filter(Q(name__icontains=name_query)
         ).filter(Q(cuisine__icontains=cuisine_query)
         ).filter(Q(course__icontains=course_query))

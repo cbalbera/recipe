@@ -13,6 +13,7 @@ class recipe(models.Model):
         return self.name
 
 class ingredient(models.Model):
+    ingredient_id = models.ManyToManyField(recipe,through='recipe_component')
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=255) # e.g. fruit, vegetable, starch
     used_how = models.CharField(max_length=255) # e.g. raw, cooked, baked
@@ -22,5 +23,7 @@ class ingredient(models.Model):
 
 class recipe_component(models.Model):
     recipe_component_id = models.IntegerField(primary_key=True)
-    recipe_id = models.IntegerField() # foreign key - id in recipe
-    ingredient_id = models.IntegerField() # foreign key - id in ingredient
+    recipe_id = models.ForeignKey(
+        recipe,on_delete=models.CASCADE) # foreign key - id in recipe
+    ingredient_id = models.ForeignKey(
+        ingredient,on_delete=models.CASCADE) # foreign key - id in ingredient
