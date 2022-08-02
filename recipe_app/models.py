@@ -2,6 +2,7 @@ from django.db import models
 
 
 class recipe(models.Model):
+    # primary key - named id - auto-generated
     name = models.CharField(max_length=255)
     time = models.PositiveSmallIntegerField()
     link = models.CharField(max_length=2083, default="") # external recipe URL
@@ -13,7 +14,11 @@ class recipe(models.Model):
         return self.name
 
 class ingredient(models.Model):
+    # primary key used to make connection with recipe
+    # via connection to recipe_component jointable
     ingredient_id = models.ManyToManyField(recipe,through='recipe_component')
+    # https://docs.djangoproject.com/en/dev/ref/models/fields/#django.db.models.ManyToManyField
+
     name = models.CharField(max_length=255)
     category = models.CharField(max_length=255) # e.g. fruit, vegetable, starch
     used_how = models.CharField(max_length=255) # e.g. raw, cooked, baked
@@ -23,7 +28,9 @@ class ingredient(models.Model):
 
 class recipe_component(models.Model):
     recipe_component_id = models.IntegerField(primary_key=True)
+    # recipe foreign key - id
     recipe_id = models.ForeignKey(
-        recipe,on_delete=models.CASCADE) # foreign key - id in recipe
+        recipe,on_delete=models.CASCADE) 
+    # ingredient foreign key - ingredient_id
     ingredient_id = models.ForeignKey(
-        ingredient,on_delete=models.CASCADE) # foreign key - id in ingredient
+        ingredient,on_delete=models.CASCADE)

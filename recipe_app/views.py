@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView, ListView
 from django.db.models import Q
 
-from recipe_app.models import recipe
+from recipe_app.models import recipe, ingredient, recipe_component
 
 # Create your views here.
 
@@ -26,10 +26,14 @@ class SearchResultsView(ListView):
         #print("cuisine is "+cuisine_query)
         course_query = self.request.GET.get("course")
         #print("course is "+course_query)
+        ing_query = self.request.GET.get("ingredient")
+        ingredient_id = ingredient.objects.filter(Q(name__icontains=ing_query))
+
 
         # create object list using case-insensitive lookups
         # https://docs.djangoproject.com/en/4.0/topics/db/queries/
         object_list = recipe.objects.filter(Q(name__icontains=name_query)
         ).filter(Q(cuisine__icontains=cuisine_query)
-        ).filter(Q(course__icontains=course_query))
+        ).filter(Q(course__icontains=course_query)
+        )
         return object_list
