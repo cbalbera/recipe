@@ -3,5 +3,10 @@
 <h1>HomePage</h1>
 
 <form action="{% url 'search_results' %}" method="get">
-    <input name="q" type="text" placeholder="Search...">
+    <input name="name" type="text" placeholder="Search by name...">
+    <input name="cuisine" type="text" placeholder="Search by cuisine...">
+    <input name="course" type="text" placeholder="Search by course...">
+    <input type="submit" value="Submit">
 </form>
+
+<!--TODO: create functionality to add new recipes with all data-->
