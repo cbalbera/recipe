@@ -12,8 +12,14 @@ def say_hello(request):
     return render(request, 'hello.html',{"name":"caleb"})
 
 # mapped to /home
-class HomePageView(TemplateView):
+class HomePageView(ListView):
+    model = ingredient
     template_name = 'home.html'
+    print("hi")
+    def get_ingredients(self):
+        ingredient_list = ingredient.objects.all()
+        print(ingredient_list)
+        return ingredient_list
 
 # mapped to /search
 class SearchResultsView(ListView):
@@ -27,22 +33,22 @@ class SearchResultsView(ListView):
         if name_query:
             #TODO: add validation
             object_list = object_list.filter(Q(name__icontains=name_query))
-            print("name is "+name_query)
+            #print("name is "+name_query)
         cuisine_query = self.request.GET.get("cuisine")
         if cuisine_query:
             #TODO: add validation
             object_list = object_list.filter(Q(cuisine__icontains=cuisine_query))
-            print("cuisine is "+cuisine_query)
+            #print("cuisine is "+cuisine_query)
         course_query = self.request.GET.get("course")
         if course_query:
             #TODO: add validation
             object_list = object_list.filter(Q(course__icontains=course_query))
-            print("course is "+course_query)
+            #print("course is "+course_query)
         ing_query = self.request.GET.get("ingredient")
         if ing_query:
             #TODO: update to accept multiple inputs
             #TODO: add validation
             object_list = object_list.filter(Q(ingredient__name__icontains=ing_query))
-            print("ingredient is "+ing_query)
+            #print("ingredient is "+ing_query)
 
         return object_list

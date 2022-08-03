@@ -1,13 +1,26 @@
 <!-- templates/home.html -->
+<!DOCTYPE html>
+<html>
+
+<body>
 
 <h1>HomePage</h1>
 
 <form action="{% url 'search_results' %}" method="get">
-    <input name="name" type="text" placeholder="Search by name...">
-    <input name="cuisine" type="text" placeholder="Search by cuisine...">
-    <input name="course" type="text" placeholder="Search by course...">
-    <input name="ingredient" type="text" placeholder="Search by ingredient...">
+    <input id="name" name="name" type="text" placeholder="Search by name...">
+    <input id="cuisine" name="cuisine" type="text" placeholder="Search by cuisine...">
+    <input id="cuisine" name="course" type="text" placeholder="Search by course...">
+    <!-- <input id="ingredient" name="ingredient" type="text" placeholder="Search by ingredient..."> -->
+    <select id="ingredient" name="ingredient" multiple>
+        {% for ingredient in ingredient_list %}
+        <option value="{{ ingredient.name }}">{{ ingredient.name }}</option>
+        {% endfor %}
+    </select>
     <input type="submit" value="Submit">
 </form>
+
+</body>
+
+</html>
 
 <!--TODO: create functionality to add new recipes with all data-->
