@@ -15,7 +15,6 @@ def say_hello(request):
 class HomePageView(ListView):
     model = ingredient
     template_name = 'home.html'
-    print("hi")
     def get_ingredients(self):
         ingredient_list = ingredient.objects.all()
         print(ingredient_list)
@@ -52,3 +51,11 @@ class SearchResultsView(ListView):
             #print("ingredient is "+ing_query)
 
         return object_list
+
+class AddRecipeView (TemplateView):
+    model = recipe
+    template_name = 'add_recipe.html'
+    def recipe_attributes(self):
+        attributes = filter(lambda a: not a.startswith('__'), dir(recipe))
+        print(attributes)
+        return attributes
