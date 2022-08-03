@@ -30,7 +30,7 @@ class recipe_component(models.Model):
     recipe_component_id = models.IntegerField(primary_key=True)
     # recipe foreign key - id
     recipe_id = models.ForeignKey(
-        recipe,on_delete=models.CASCADE) 
+        recipe,on_delete=models.CASCADE, db_column = 'recipe_id') 
     # ingredient foreign key - ingredient_id
     ingredient_id = models.ForeignKey(
-        ingredient,on_delete=models.CASCADE)
+        ingredient,on_delete=models.CASCADE, db_column = 'ingredient_id')

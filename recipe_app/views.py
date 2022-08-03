@@ -21,19 +21,28 @@ class SearchResultsView(ListView):
     template_name = 'search_results.html'
     def get_queryset(self):
         name_query = self.request.GET.get("name")
-        #print("name is "+name_query)
+        print("name is "+name_query)
         cuisine_query = self.request.GET.get("cuisine")
-        #print("cuisine is "+cuisine_query)
+        print("cuisine is "+cuisine_query)
         course_query = self.request.GET.get("course")
-        #print("course is "+course_query)
+        print("course is "+course_query)
         ing_query = self.request.GET.get("ingredient")
-        ingredient_id = ingredient.objects.filter(Q(name__icontains=ing_query))
-
+        #TODO: update to skip if empty
+        ingredient_id = ingredient.objects.filter(Q(name__icontains=ing_query)).values('id')
+        print(ingredient_id)
+        testq = recipe_component.objects.filter(
+            Q(recipe_id=3)
+        )
+        print(testq)
 
         # create object list using case-insensitive lookups
         # https://docs.djangoproject.com/en/4.0/topics/db/queries/
+
+        #TODO: update so that fields with no input are ignored, rather than returning all
         object_list = recipe.objects.filter(Q(name__icontains=name_query)
-        ).filter(Q(cuisine__icontains=cuisine_query)
-        ).filter(Q(course__icontains=course_query)
-        )
+        | Q(cuisine__icontains=cuisine_query)
+        | Q(course__icontains=course_query))
+        #| Q(recipe_component__ingredient_id__icontains=ingredient_id)
+        #)
+
         return object_list
