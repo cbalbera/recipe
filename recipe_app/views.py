@@ -39,12 +39,10 @@ class SearchResultsView(ListView):
             object_list = object_list.filter(Q(course__icontains=course_query))
             print("course is "+course_query)
         ing_query = self.request.GET.get("ingredient")
-        #TODO: update to skip if empty
-        ingredient_id = ingredient.objects.filter(Q(name__icontains=ing_query)).values('id')
-        print(ingredient_id)
-        testq = recipe_component.objects.filter(
-            Q(recipe_id=3)
-        )
-        print(testq)
+        if ing_query:
+            #TODO: update to accept multiple inputs
+            #TODO: add validation
+            object_list = object_list.filter(Q(ingredient__name__icontains=ing_query))
+            print("ingredient is "+ing_query)
 
         return object_list
