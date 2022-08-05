@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.views.generic import TemplateView, ListView
+from django.views.generic import ListView, FormView, CreateView
 from django.db.models import Q
 
 from recipe_app.models import recipe, ingredient, recipe_component
@@ -52,9 +52,10 @@ class SearchResultsView(ListView):
 
         return object_list
 
-class AddRecipeView (TemplateView):
+class AddRecipeView (CreateView):
     model = recipe
     template_name = 'add_recipe.html'
+    fields =['name','time','link','thumbnail','course','cuisine']
     def recipe_attributes(self):
         attributes = filter(lambda a: not a.startswith('__'), dir(recipe))
         print(attributes)
