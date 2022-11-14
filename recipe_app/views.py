@@ -24,6 +24,7 @@ class HomePageView(ListView):
 class SearchResultsView(ListView):
     model = recipe
     template_name = 'search_results.html'
+    
     def get_queryset(self):
         object_list = recipe.objects.all()
         name_query = self.request.GET.get("name")

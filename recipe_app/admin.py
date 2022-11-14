@@ -1,8 +1,7 @@
 from django.contrib import admin
 
-from .models import recipe
-from .models import ingredient
-from .models import recipe_component
+from .models import *
+from .forms import *
 
 # only one of these must be available for use at any time
 
@@ -29,3 +28,13 @@ class appAdmin(admin.ModelAdmin):
 
 admin.site.register(recipe_component,appAdmin)
 """
+
+@admin.register(recipe)    
+class RecipeAdmin(admin.ModelAdmin):
+    form = recipeAdminForm
+
+'''
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    pass
+'''
