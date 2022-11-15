@@ -46,7 +46,8 @@ TAGS = (
     ('vg', 'Vegan'),
     ('ko', 'Kosher'),
     ('df', 'Dairy-free'),
-    ('gf', 'Gluten-free')
+    ('gf', 'Gluten-free'),
+    ('sp', 'Spicy')
 )
 
 # having both of these feels unnecessary, but the dict here speeds lookup time in an already-slow function. would be O([# tags this recipe * 3] * [# tags total])
@@ -76,103 +77,76 @@ class recipe(models.Model):
         EASY = 'EA', _('Easy')
         MEDIUM = 'MD', _('Medium')
         HARD = 'HA', _('Hard')
-        #TODO: create get_difficulty function to iterate over difficulty_choices
-
-        '''
-        DIFFICULTY_CHOICES = [
-            ('EA', 'Easy'),
-            ('MD', 'Medium'),
-            ('HA', 'Hard')
-        ]
-        '''
+        
     def getDifficulty(self):
             # Get value from choices enum
             return self.Difficulty(self.difficulty).label
 
-    '''class Course(models.TextChoices):
-        APPETIZER = 'AP'
-        MAIN = 'MC'
-        DESSERT = 'DS'
-        SIDE = 'SD'
-        TOPPING = 'TO'
-        BREAKFAST = 'BK'
+    class Course(models.TextChoices):
+        APPETIZER = 'AP', _('Appetizer')
+        MAIN = 'MC', _('Main')
+        DESSERT = 'DS', _('Dessert')
+        SIDE = 'SD', _('Side')
+        TOPPING = 'TO', _('Topping')
+        BREAKFAST = 'BK', _('Breakfast')
         
-        COURSE_CHOICES = [
-            ('AP', 'Appetizer'),
-            ('MC', 'Main'),
-            ('DS', 'Dessert'),
-            ('SD', 'Side'),
-            ('TO', 'Topping'),
-            ('BREAKFAST', 'Breakfast')
-        ]
-        '''
-
-    '''
+    def getCourse(self):
+            return self.Course(self.course).label
+    
     class Cuisine(models.TextChoices):
-        AMERICAN = 'AM',
-        ITALIAN = 'IT',
-        MEDITERRANEAN = 'MD',
-        FRENCH = 'FR',
-        CHINESE = 'CH',
-        JAPANESE = 'JP',
-        KOREAN = 'KO',
-        VIETNAMESE = 'VT',
-        THAI = 'TH',
-        MEXICAN = 'MX',
-        INDIAN = 'IN',
-        MIDDLE_EASTERN = 'ME',
-        SPANISH = 'SP',
-        ENGLISH = 'EN',
-        GERMAN = 'DE',
-        EASTERN_EUROPEAN = 'EE',
-        LATIN_AMERICAN = 'LA',
-        AFRICAN = 'AF',
-        INDONESIAN = 'IA',
-        CARIBBEAN = 'CB'
-        CUISINE_CHOICES = [
-            ('AM', 'American'),
-            ('IT', 'Italian'),
-            ('MD', 'Mediterranean'),
-            ('IT', 'Italian'),
-            ('FR', 'French'),
-            ('CH', 'Chinese'),
-            ('JP', 'Japanese'),
-            ('KO', 'Korean'),
-            ('VT', 'Vietnamese'),
-            ('TH', 'Thai'),
-            ('MX', 'Mexican'),
-            ('IN', 'Indian'),
-            ('ME', 'Middle Eastern'),
-            ('SP', 'Spanish'),
-            ('EN', 'English'),
-            ('DE', 'German'),
-            ('EE', 'Eastern European'),
-            ('LA', 'Latin American'),
-            ('AF', 'African'),
-            ('IN', 'Indonesian'),
-            ('CB', 'Caribbean')
-        ]
-        '''
+        AMERICAN = 'AM', _('American')
+        ITALIAN = 'IT', _('Italian')
+        MEDITERRANEAN = 'MD', _('Mediterranean')
+        FRENCH = 'FR', _('French')
+        CHINESE = 'CH', _('Chinese')
+        JAPANESE = 'JP', _('Japanee')
+        KOREAN = 'KO', _('Korean')
+        VIETNAMESE = 'VT', _('Vietnamese')
+        THAI = 'TH', _('Thai')
+        MEXICAN = 'MX', _('Mexican')
+        INDIAN = 'IN', _('Indian')
+        MIDDLE_EASTERN = 'ME', _('Middle Eastern')
+        SPANISH = 'SP', _('Spanish')
+        ENGLISH = 'EN', _('English')
+        GERMAN = 'DE', _('German')
+        EASTERN_EUROPEAN = 'EE', _('Eastern European')
+        LATIN_AMERICAN = 'LA', _('Latin American')
+        AFRICAN = 'AF', _('African')
+        INDONESIAN = 'IA', _('Indonesian')
+        CARIBBEAN = 'CB', _('Caribbean')
+    
+    def getCuisine(self):
+            return self.Cuisine(self.cuisine).label
+
+    class cookType(models.TextChoices):
+        MIX = 'MI', _('Mix / No Cook')
+        BAKE = 'BK', _('Bake')
+        BOIL = 'BO', _('Boil')
+        PAN_SEAR = 'PS', _('Pan Sear')
+        PAN_FRY = 'FP', _('Pan Fry')
+        STEAM = 'ST', _('Steam')
+        DEEP_FRY = 'FD', _('Deep Fry')
+        BRAISE = 'BE', ('Braise')
+        BROIL = 'BR', _('Broil')
+        ROAST = 'RO', _('Roast')
 
     # primary key - named id - auto-generated
     name = models.CharField(max_length=255)
     time = models.PositiveSmallIntegerField()
     link = models.CharField(max_length=2083, default="") # external recipe URL
     thumbnail = models.CharField(max_length=2083, blank=True) # for image URL
-    course = models.CharField(max_length=255)
-    '''
+    course = models.CharField(
         max_length = 2,
-        choices = Course.choices
-    )'''
-    cuisine = models.CharField(max_length=255)
-    '''max_length = 2,
-        choices = Cuisine.CUISINE_CHOICES
-    )'''
+        choices = Course.choices,
+        #, default=[one of the choices]
+    )
+    cuisine = models.CharField(
+        max_length = 2,
+        choices = Cuisine.choices
+    )
     difficulty = models.CharField(
         max_length = 2,
-        choices = Difficulty.choices,
-
-        #, default=[one of the choices]
+        choices = Difficulty.choices
     )
 
     #tags = models.ManyToManyField(Tag)
@@ -191,10 +165,6 @@ class recipe(models.Model):
             else:
                 currentString = currentString + character
         return tags
-    
-    # potential future adds:
-    # cook type (e.g. none, soup/stew, braise, bake, stovetop, fry, sear)
-    
     
     def __str__(self):
         return self.name
